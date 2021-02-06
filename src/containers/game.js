@@ -21,11 +21,14 @@ const GameContainer = ({ children, ...restProps }) => {
         <Card.Group>
           {currentPokemon.map((pokeman, idx) => {
             return (
-              <Card.Item onClick={() => handleClick(pokeman)} key={idx} double>
-                <Card.Image src={pokeman.url} alt="" />
-                <Card.Text>
-                  {pokeman.name[0].toUpperCase() + pokeman.name.slice(1)}
-                </Card.Text>
+              <Card.Item
+                color={pokeman.color}
+                onClick={() => handleClick(pokeman)}
+                key={idx}
+                double
+              >
+                <Card.Image src={pokeman.image} alt="" />
+                <Card.Text>{pokeman.name}</Card.Text>
               </Card.Item>
             );
           })}

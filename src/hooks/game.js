@@ -1,14 +1,16 @@
-import { useEffect, useState, useCallback, useContext } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { arraySample } from '../utils/array_sample';
 
 import { useQuery } from '@apollo/client';
-import { GET_POKEMON } from '../graphql/get_pokemon';
-
+import { GET_POKEMON } from '../constants/graphql/get_pokemon';
+import { TYPES } from '../constants/types';
 export const useGame = () => {
-  const { data: { pokemon = [] } = {} } = useQuery(GET_POKEMON, {
+  const { data: { pokemons = [] } = {} } = useQuery(GET_POKEMON, {
     variables: { first: 151 },
   });
-  const [allPokemon, setAllPokemon] = useState([]);
+
+  console.log(pokemons);
+
   const [seenPokemon, setSeenPokemon] = useState([]);
   const [currentPokemon, setCurrentPokemon] = useState([]);
   const [score, setScore] = useState(0);
@@ -17,14 +19,12 @@ export const useGame = () => {
   const imgURL = (id) =>
     `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 
-  useEffect(() => {
-    setAllPokemon(pokemon);
-  }, []);
-
-  const getColor = async (pokemon) => {};
+  const getColor = (type) => {
+    return TYPES[type];
+  };
 
   const getCurrentPokemon = useCallback(() => {
-    let samplePokemon = arraySample(allPokemon, 3);
+    let samplePokemon = arraySample(pokemons, 3);
     if (seenPokemon.length) {
       let sampleSeen = arraySample(seenPokemon, 1)[0];
       if (!samplePokemon.some((poke) => poke.name === sampleSeen.name)) {
@@ -32,14 +32,18 @@ export const useGame = () => {
         samplePokemon[idx] = sampleSeen;
       }
     }
-    return samplePokemon;
-  }, [allPokemon, seenPokemon]);
+    return samplePokemon.map((pokemon) => ({
+      ...pokemon,
+      image: imgURL(parseInt(pokemon.number)),
+      color: getColor(pokemon.types[0]),
+    }));
+  }, [pokemons, seenPokemon]);
 
   useEffect(() => {
-    if (allPokemon.length) {
+    if (pokemons.length) {
       setCurrentPokemon(getCurrentPokemon());
     }
-  }, [allPokemon, score, getCurrentPokemon]);
+  }, [pokemons.length, score, getCurrentPokemon]);
 
   const resetGame = () => {
     setHighScore((hs) => Math.max(hs, score));
