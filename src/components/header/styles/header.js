@@ -3,10 +3,15 @@ import styled from 'styled-components';
 export const Container = styled.header``;
 
 export const Title = styled.h1`
+  margin: 0.1em 0 0 0;
   text-align: center;
-  font-size: 5rem;
+  font-size: 3rem;
   color: #ffca00;
-  margin: 1em 0 0 0;
+
+  @media (min-width: 700px) {
+    margin-top: 1em;
+    font-size: 5rem;
+  }
 `;
 
 export const Subtitle = styled.p`
@@ -14,6 +19,10 @@ export const Subtitle = styled.p`
   text-align: center;
   line-height: 0.2;
   font-style: italic;
-  font-size: 1.8rem;
+  font-size: 1.1rem;
   color: white;
+
+  @media (min-width: 700px) {
+    font-size: 1.8rem;
+  }
 `;
