@@ -6,7 +6,7 @@ export const Title = styled.h1`
   margin: 0.1em 0 0 0;
   text-align: center;
   font-size: 3rem;
-  color: #ffca00;
+  color: rgba(255, 255, 0, 0.9);
 
   @media (min-width: 700px) {
     margin-top: 1em;
